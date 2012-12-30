@@ -1,52 +1,30 @@
 package ru.finkel.utorrentaccess.domain;
 
-import com.fasterxml.jackson.annotation.*;
+import javax.annotation.Generated;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import javax.annotation.Generated;
-import java.util.HashMap;
-import java.util.Map;
-
-@JsonInclude( JsonInclude.Include.NON_NULL )
 @Generated( "com.googlecode.jsonschema2pojo" )
-@JsonPropertyOrder( { "hash", "trackers", "ulrate", "dlrate", "superseed", "dht", "pex", "seed_override", "seed_ratio", "seed_time", "ulslots",
-		"seed_num" } )
 public class Prop {
 
-	@JsonProperty( "hash" )
 	private String hash;
-	@JsonProperty( "trackers" )
 	private String trackers;
-	@JsonProperty( "ulrate" )
 	private Integer ulrate;
-	@JsonProperty( "dlrate" )
 	private Integer dlrate;
-	@JsonProperty( "superseed" )
 	private Integer superseed;
-	@JsonProperty( "dht" )
 	private Integer dht;
-	@JsonProperty( "pex" )
 	private Integer pex;
-	@JsonProperty( "seed_override" )
 	private Integer seed_override;
-	@JsonProperty( "seed_ratio" )
 	private Integer seed_ratio;
-	@JsonProperty( "seed_time" )
 	private Integer seed_time;
-	@JsonProperty( "ulslots" )
 	private Integer ulslots;
-	@JsonProperty( "seed_num" )
 	private Integer seed_num;
-	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-	@JsonProperty( "hash" )
 	public String getHash() {
 		return hash;
 	}
 
-	@JsonProperty( "hash" )
 	public void setHash( String hash ) {
 		this.hash = hash;
 	}
@@ -56,12 +34,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "trackers" )
 	public String getTrackers() {
 		return trackers;
 	}
 
-	@JsonProperty( "trackers" )
 	public void setTrackers( String trackers ) {
 		this.trackers = trackers;
 	}
@@ -71,12 +47,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "ulrate" )
 	public Integer getUlrate() {
 		return ulrate;
 	}
 
-	@JsonProperty( "ulrate" )
 	public void setUlrate( Integer ulrate ) {
 		this.ulrate = ulrate;
 	}
@@ -86,12 +60,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "dlrate" )
 	public Integer getDlrate() {
 		return dlrate;
 	}
 
-	@JsonProperty( "dlrate" )
 	public void setDlrate( Integer dlrate ) {
 		this.dlrate = dlrate;
 	}
@@ -101,12 +73,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "superseed" )
 	public Integer getSuperseed() {
 		return superseed;
 	}
 
-	@JsonProperty( "superseed" )
 	public void setSuperseed( Integer superseed ) {
 		this.superseed = superseed;
 	}
@@ -116,12 +86,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "dht" )
 	public Integer getDht() {
 		return dht;
 	}
 
-	@JsonProperty( "dht" )
 	public void setDht( Integer dht ) {
 		this.dht = dht;
 	}
@@ -131,12 +99,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "pex" )
 	public Integer getPex() {
 		return pex;
 	}
 
-	@JsonProperty( "pex" )
 	public void setPex( Integer pex ) {
 		this.pex = pex;
 	}
@@ -146,12 +112,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "seed_override" )
 	public Integer getSeed_override() {
 		return seed_override;
 	}
 
-	@JsonProperty( "seed_override" )
 	public void setSeed_override( Integer seed_override ) {
 		this.seed_override = seed_override;
 	}
@@ -161,12 +125,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "seed_ratio" )
 	public Integer getSeed_ratio() {
 		return seed_ratio;
 	}
 
-	@JsonProperty( "seed_ratio" )
 	public void setSeed_ratio( Integer seed_ratio ) {
 		this.seed_ratio = seed_ratio;
 	}
@@ -176,12 +138,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "seed_time" )
 	public Integer getSeed_time() {
 		return seed_time;
 	}
 
-	@JsonProperty( "seed_time" )
 	public void setSeed_time( Integer seed_time ) {
 		this.seed_time = seed_time;
 	}
@@ -191,12 +151,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "ulslots" )
 	public Integer getUlslots() {
 		return ulslots;
 	}
 
-	@JsonProperty( "ulslots" )
 	public void setUlslots( Integer ulslots ) {
 		this.ulslots = ulslots;
 	}
@@ -206,12 +164,10 @@ public class Prop {
 		return this;
 	}
 
-	@JsonProperty( "seed_num" )
 	public Integer getSeed_num() {
 		return seed_num;
 	}
 
-	@JsonProperty( "seed_num" )
 	public void setSeed_num( Integer seed_num ) {
 		this.seed_num = seed_num;
 	}
@@ -236,14 +192,5 @@ public class Prop {
 		return EqualsBuilder.reflectionEquals( this, other );
 	}
 
-	@JsonAnyGetter
-	public Map<String, Object> getAdditionalProperties() {
-		return this.additionalProperties;
-	}
-
-	@JsonAnySetter
-	public void setAdditionalProperties( String name, Object value ) {
-		this.additionalProperties.put( name, value );
-	}
 
 }

@@ -4,7 +4,9 @@
  */
 package ru.finkel.utorrentaccess;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import fj.P2;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -13,14 +15,16 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import ru.finkel.utorrentaccess.domain.ChangedTorrentList;
-import ru.finkel.utorrentaccess.domain.TorrentFiles;
 import ru.finkel.utorrentaccess.domain.TorrentList;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static ru.finkel.utorrentaccess.UTorrent.Action.GET_FILES;
+import ru.finkel.utorrentaccess.domain.FilesRequestResult;
+//import ru.finkel.utorrentaccess.domain.TorrentFiles;
 
 /**
  * @author finkel
@@ -30,21 +34,24 @@ public class UTorrent {
     public static final String CHARSET = "UTF-8";
     public static final String HTTP = "http://";
     private UTorrentServer server;
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final Gson GSON = new GsonBuilder().create();
     private static DefaultHttpClient httpClient = new DefaultHttpClient();
     private String token;
     private static final Map<UTorrentServer, UTorrent> MAP = new HashMap<>();
+
 
     private UTorrent() {
     }
 
     public static UTorrent getInstance(String host, int port, String login, String password) throws IOException {
         UTorrentServer uTorrentServer = new UTorrentServer(host, port, login, password);
-        if (MAP.get(uTorrentServer) != null) return MAP.get(uTorrentServer);
+        if (MAP.get(uTorrentServer) != null) {
+            return MAP.get(uTorrentServer);
+        }
         UTorrent instance = new UTorrent();
         instance.server = uTorrentServer;
         instance.token = instance.getToken(host, port, login, password);
-        MAP.put(uTorrentServer,instance);
+        MAP.put(uTorrentServer, instance);
         return instance;
     }
 
@@ -68,11 +75,11 @@ public class UTorrent {
      * @throws IOException
      */
     public TorrentList getTorrentList() throws IOException {
-        return OBJECT_MAPPER.readValue(getTorrentsListJson(), TorrentList.class);
+        return GSON.fromJson(getTorrentsListJson(), TorrentList.class);
     }
 
     public ChangedTorrentList getChangedTorrentList(String cacheId) throws IOException {
-        return OBJECT_MAPPER.readValue(getChangedTorrentListJson(cacheId), ChangedTorrentList.class);
+        return GSON.fromJson(getChangedTorrentListJson(cacheId), ChangedTorrentList.class);
     }
 
     /**
@@ -82,12 +89,16 @@ public class UTorrent {
      * @return
      * @throws IOException
      */
-    public String getFilesByTorrentHashJson(String hash) throws IOException {
+    private String getFilesByTorrentHashJson(String hash) throws IOException {
         String url = generateFirstPartOfRequestUrl() + generateActionPart(GET_FILES) + "&hash=" + hash;
-        return generateJsonReturningRequest(url);
+        final String text = generateJsonReturningRequest(url);
+        return text;
     }
-    public TorrentFiles getFilesByTorrentHash(String hash) throws IOException{
-        return OBJECT_MAPPER.readValue(getFilesByTorrentHashJson(hash), TorrentFiles.class);
+
+    public FilesRequestResult getFilesByTorrentHash(String hash) throws IOException {
+        
+        final FilesRequestResult result = GSON.fromJson(getFilesByTorrentHashJson(hash), FilesRequestResult.class);
+        return result;
     }
 
     /**
@@ -135,6 +146,7 @@ public class UTorrent {
      * Enumeration of actions
      */
     public enum Action {
+
         GET_FILES("getfiles");
         private final String actionText;
 

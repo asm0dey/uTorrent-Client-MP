@@ -40,7 +40,13 @@
                 <Column editable="true" title="Title 4" type="java.lang.Object"/>
               </Table>
             </Property>
+            <Property name="autoResizeMode" type="int" value="4"/>
+            <Property name="doubleBuffered" type="boolean" value="true"/>
+            <Property name="fillsViewportHeight" type="boolean" value="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTable1.setAutoCreateRowSorter(true);&#xa;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

@@ -1,76 +1,84 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ru.finkel.utorrentaccess.domain;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
-import java.util.ArrayList;
-
 /**
- * Created with IntelliJ IDEA. User: finkel Date: 29.12.12 Time: 19:36 To change this template use File | Settings | File Templates.
+ *
+ * @author finkel
  */
-public class SingleFile extends ArrayList<Object> {
+class SingleFile {
 
-	private String fileName;
-	private long fileSize;
-	private long downloaded;
-	private Priority priority;
+    private String name;
+    private int fileSize;
+    private int downloaded;
+    private Priority priority;
 
-	@Override
-	public Object set( int index, Object element ) {
-		final Object set = super.set( index, element );
-		makeAdditionalOperations( index + 1, element );
-		return set; // To change body of generated methods, choose Tools | Templates.
-	}
+    public int getFileSize() {
+        return fileSize;
+    }
 
-	@Override
-	public boolean add( Object e ) {
-		final boolean add = super.add( e );
-		makeAdditionalOperations( size(), e );
-		return add; // To change body of generated methods, choose Tools | Templates.
-	}
+    public int getDownloaded() {
+        return downloaded;
+    }
 
-	private void makeAdditionalOperations( int size, Object e ) {
-		switch ( size ) {
-		case 1:
-			fileName = e.toString();
-			break;
-		case 2:
-			fileSize = Long.parseLong( e.toString() );
-			break;
-		case 3:
-			downloaded = Long.parseLong( e.toString() );
-			break;
-		case 4:
-			priority = Priority.getByInt( Integer.parseInt( e.toString() ) );
-		}
-	}
+    public String getName() {
+        return name;
+    }
 
-	public enum Priority {
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		SKIP( 0 ), LOW( 1 ), NORMAL( 2 ), HIGH( 3 );
+    public Priority getPriority() {
+        return priority;
+    }
 
-		private static Priority getByInt( int parseInt ) {
-			for ( Priority priority : Priority.values() ) {
-				if ( priority.getNumber() == parseInt ) {
-					return priority;
-				}
-			}
-			throw new IllegalArgumentException( "Wrong priority" );
-		}
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
 
-		private int number;
+    void setName(Object name) {
+        this.name = name.toString();
+    }
 
-		private Priority( int number ) {
-			this.number = number;
-		}
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
-		public int getNumber() {
-			return number;
-		}
-	}
+    void setFileSize(int intValue) {
+        this.fileSize = intValue;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString( this, ToStringStyle.SHORT_PREFIX_STYLE );
-	}
+    void setDownloaded(int intValue) {
+        downloaded = intValue;
+    }
+
+    public enum Priority {
+
+        SKIPPED(0), LOW(1), NORMAL(2), HIGH(3);
+
+        public static Priority byIntValue(int value) {
+            for (Priority priority : Priority.values()) {
+                if (priority.intValue == value) {
+                    return priority;
+                }
+            }
+            throw new RuntimeException(new IllegalArgumentException("Invalid int value"));
+        }
+        private int intValue;
+
+        private int intValue() {
+            return intValue;
+        }
+
+        private Priority(int value) {
+            intValue = value;
+        }
+    }
 }
