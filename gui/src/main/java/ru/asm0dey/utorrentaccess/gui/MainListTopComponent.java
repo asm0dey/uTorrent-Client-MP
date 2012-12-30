@@ -19,9 +19,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import org.openide.util.Exceptions;
+import org.openide.util.LookupEvent;
+import org.openide.util.LookupListener;
+import org.openide.util.lookup.AbstractLookup;
+import org.openide.util.lookup.InstanceContent;
 
 /**
  * Top component which displays something.
@@ -35,7 +42,9 @@ persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @ActionReference( path = "Menu/Window" /*, position = 333 */)
 @TopComponent.OpenActionRegistration( displayName = "#CTL_MainListAction", preferredID = "MainListTopComponent")
 @Messages({"CTL_MainListAction=MainList", "CTL_MainListTopComponent=MainList Window", "HINT_MainListTopComponent=This is a MainList window"})
-public final class MainListTopComponent extends TopComponent {
+public final class MainListTopComponent extends TopComponent implements LookupListener {
+
+    private final InstanceContent content;
 
     public MainListTopComponent() throws IOException {
         initComponents();
@@ -45,7 +54,9 @@ public final class MainListTopComponent extends TopComponent {
         putClientProperty(TopComponent.PROP_CLOSING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_DRAGGING_DISABLED, Boolean.TRUE);
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
-
+        content = new InstanceContent();
+        associateLookup(new AbstractLookup(content));
+        
     }
 
     /**
@@ -112,7 +123,7 @@ public final class MainListTopComponent extends TopComponent {
         final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
         final List<SingleListTorrent> torrents = instance.getTorrentList().getTorrents();
         final int length = torrents.size();
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Name", "% Completed"}, length) {
+        DefaultTableModel model = new DefaultTableModel(new Object[]{"Name", "% Completed","Hash"}, length) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -126,7 +137,31 @@ public final class MainListTopComponent extends TopComponent {
             SingleListTorrent singleListTorrent = torrents.get(i);
             jTable1.setValueAt(singleListTorrent.getName(), i, 0);
             jTable1.setValueAt(singleListTorrent.getPercentReady(), i, 1);
+            jTable1.setValueAt(singleListTorrent.getHash(), i, 2);
         }
+        final ListSelectionModel selectionModel = jTable1.getSelectionModel();
+        selectionModel.addListSelectionListener(new ListSelectionListener() {
+
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                final int[] selectedRows = jTable1.getSelectedRows();
+                if(selectedRows.length!=0) {
+                    for (int i : selectedRows) {
+                        try {
+                            final String hash = (String) jTable1.getValueAt(i, 2);
+                            content.add(instance.getFilesByTorrentHash(hash));
+                        } catch (IOException ex) {
+                            Exceptions.printStackTrace(ex);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void resultChanged(LookupEvent ev) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     class ProgressRenderer extends DefaultTableCellRenderer {
