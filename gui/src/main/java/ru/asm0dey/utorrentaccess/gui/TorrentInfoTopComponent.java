@@ -13,7 +13,7 @@ import org.openide.util.LookupListener;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
-import ru.finkel.utorrentaccess.domain.FilesRequestResult;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
 
 /**
  * Top component which displays something.
@@ -100,6 +100,7 @@ public final class TorrentInfoTopComponent extends TopComponent implements Looku
 
     @Override
     public void resultChanged(LookupEvent ev) {
+        final Class<? extends LookupEvent> aClass = ev.getClass();
         StringBuilder builder = new StringBuilder();
         for (FilesRequestResult filesRequestResult : lookupResult.allInstances()) {
             builder.append("\n").append(filesRequestResult.toString());

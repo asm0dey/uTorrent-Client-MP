@@ -4,13 +4,19 @@
  */
 package ru.asm0dey.utorrentaccess.gui;
 
+import ca.odell.glazedlists.BasicEventList;
+import ca.odell.glazedlists.EventList;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventListModel;
+import ca.odell.glazedlists.swing.EventTableModel;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.util.NbBundle.Messages;
 import org.openide.windows.TopComponent;
-import ru.finkel.utorrentaccess.UTorrent;
-import ru.finkel.utorrentaccess.domain.SingleListTorrent;
+import ru.asm0dey.utorrentaccess.utorrentclient.UTorrent;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.SingleListTorrent;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,7 +28,6 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import org.openide.util.Exceptions;
 import org.openide.util.LookupEvent;
@@ -56,7 +61,7 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
         putClientProperty(TopComponent.PROP_UNDOCKING_DISABLED, Boolean.TRUE);
         content = new InstanceContent();
         associateLookup(new AbstractLookup(content));
-        
+
     }
 
     /**
@@ -120,43 +125,65 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
     }
 
     private void initTable() throws IOException {
+//        final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
+//        final List<SingleListTorrent> torrents = instance.getTorrentList().getTorrents();
+//        final int length = torrents.size();
+//        DefaultTableModel model = new DefaultTableModel(new Object[]{"Name", "% Completed", "Hash"}, length) {
+//            @Override
+//            public boolean isCellEditable(int row, int column) {
+//                return false;
+//            }
+//        };
+//        jTable1.setModel(model);
+//        final TableColumn progressColumn = jTable1.getColumnModel().getColumn(1);
+//        jTable1.setRowSorter(new TableRowSorter(model));
+//        progressColumn.setCellRenderer(new ProgressRenderer());
+//        for (int i = 0; i < torrents.size(); i++) {
+//            SingleListTorrent singleListTorrent = torrents.get(i);
+//            jTable1.setValueAt(singleListTorrent.getName(), i, 0);
+//            jTable1.setValueAt(singleListTorrent.getPercentReady(), i, 1);
+//            jTable1.setValueAt(singleListTorrent.getHash(), i, 2);
+//        }
+//        final ListSelectionModel selectionModel = jTable1.getSelectionModel();
+//        selectionModel.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                final int[] selectedRows = jTable1.getSelectedRows();
+//                if (selectedRows.length != 0&&!e.getValueIsAdjusting()) {
+//                    for (int i : selectedRows) {
+//                        try {
+//                            final String hash = (String) jTable1.getValueAt(i, 2);
+//                            content.add(instance.getFilesByTorrentHash(hash));
+//                        } catch (IOException ex) {
+//                            Exceptions.printStackTrace(ex);
+//                        }
+//                    }
+//                }
+//            }
+//        });
         final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
         final List<SingleListTorrent> torrents = instance.getTorrentList().getTorrents();
-        final int length = torrents.size();
-        DefaultTableModel model = new DefaultTableModel(new Object[]{"Name", "% Completed","Hash"}, length) {
+        final EventList<SingleListTorrent> basicEventList = GlazedLists.eventList(torrents);
+        EventTableModel<SingleListTorrent> model = new EventTableModel<SingleListTorrent>(basicEventList, new TableFormat<SingleListTorrent>() {
             @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
+            public int getColumnCount() {
+                return 19;
             }
-        };
-        jTable1.setModel(model);
-        final TableColumn progressColumn = jTable1.getColumnModel().getColumn(1);
-        jTable1.setRowSorter(new TableRowSorter(model));
-        progressColumn.setCellRenderer(new ProgressRenderer());
-        for (int i = 0; i < torrents.size(); i++) {
-            SingleListTorrent singleListTorrent = torrents.get(i);
-            jTable1.setValueAt(singleListTorrent.getName(), i, 0);
-            jTable1.setValueAt(singleListTorrent.getPercentReady(), i, 1);
-            jTable1.setValueAt(singleListTorrent.getHash(), i, 2);
-        }
-        final ListSelectionModel selectionModel = jTable1.getSelectionModel();
-        selectionModel.addListSelectionListener(new ListSelectionListener() {
 
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                final int[] selectedRows = jTable1.getSelectedRows();
-                if(selectedRows.length!=0) {
-                    for (int i : selectedRows) {
-                        try {
-                            final String hash = (String) jTable1.getValueAt(i, 2);
-                            content.add(instance.getFilesByTorrentHash(hash));
-                        } catch (IOException ex) {
-                            Exceptions.printStackTrace(ex);
-                        }
-                    }
+            public String getColumnName(int column) {
+                switch(column){
+                    case 0:return "Hash";
                 }
+                return "";
+            }
+
+            @Override
+            public Object getColumnValue(SingleListTorrent baseObject, int column) {
+                return baseObject.get(column);
             }
         });
+        jTable1.setModel(model);
     }
 
     @Override

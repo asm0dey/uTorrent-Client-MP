@@ -6,9 +6,9 @@ package ru.asm0dey.utorrentaccess.presenters;
 
 import java.io.IOException;
 import org.openide.util.Exceptions;
-import ru.finkel.utorrentaccess.UTorrent;
-import ru.finkel.utorrentaccess.domain.FilesRequestResult;
-import ru.finkel.utorrentaccess.domain.TorrentList;
+import ru.asm0dey.utorrentaccess.utorrentclient.UTorrent;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.TorrentList;
 
 /**
  *
