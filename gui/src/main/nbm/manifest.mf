@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+OpenIDE-Module-Layer: ru/asm0dey/utorrentaccess/gui/layer.xml
 OpenIDE-Module-Localizing-Bundle: ru/asm0dey/utorrentaccess/gui/Bundle.properties
 OpenIDE-Module-Requires: org.openide.windows.WindowManager

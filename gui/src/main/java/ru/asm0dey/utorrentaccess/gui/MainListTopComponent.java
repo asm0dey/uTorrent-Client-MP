@@ -6,13 +6,17 @@ package ru.asm0dey.utorrentaccess.gui;
 
 import ca.odell.glazedlists.EventList;
 import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.SortedList;
 import ca.odell.glazedlists.gui.TableFormat;
+import ca.odell.glazedlists.swing.EventSelectionModel;
 import ca.odell.glazedlists.swing.EventTableModel;
+import ca.odell.glazedlists.swing.TableComparatorChooser;
 import java.awt.*;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.List;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -69,17 +73,6 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
         jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         jTable1.setDoubleBuffered(true);
         jTable1.setFillsViewportHeight(true);
@@ -95,6 +88,7 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
 
     @Override
     public void componentOpened() {
+//        jTable1.getColumnModel().set
         // TODO add custom code on component opening
     }
 
@@ -153,12 +147,22 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
 //            }
 //        });
         final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
-        final List<SingleListTorrent> torrents = instance.getTorrentList().getTorrents();
-        final EventList<SingleListTorrent> basicEventList = GlazedLists.eventList(torrents);
-        EventTableModel<SingleListTorrent> model = new EventTableModel<>(basicEventList, new ToorrentsTableFormat());
-        
-        jTable1.setModel(model);
-//        jTable1.getColumnModel().getColumn(4).setCellRenderer(new ProgressRenderer());
+        final EventList<SingleListTorrent> basicEventList = GlazedLists.eventList(instance.getTorrentList().getTorrents());
+        final SortedList<SingleListTorrent> sortedList = new SortedList<>(basicEventList);
+        EventTableModel<SingleListTorrent> model = new EventTableModel<>(sortedList, new ToorrentsTableFormat());
+        final EventSelectionModel<SingleListTorrent> eventSelectionModel = new EventSelectionModel<>(basicEventList);
+        eventSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jTable1 = new JTable(model);
+        jTable1.setSelectionModel(eventSelectionModel);
+        final TableComparatorChooser<SingleListTorrent> install = TableComparatorChooser.install(jTable1, sortedList, TableComparatorChooser.MULTIPLE_COLUMN_MOUSE_WITH_UNDO);
+        jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                for (SingleListTorrent singleListTorrent : eventSelectionModel.getSelected()) {
+                    content.add(singleListTorrent);
+                }
+            }
+        });
     }
 
     @Override
@@ -206,16 +210,16 @@ public final class MainListTopComponent extends TopComponent implements LookupLi
         @Override
         public String getColumnName(int column) {
 
-            return column==0?"Hash":column==1?"Statuses":column==2?"Name":column==3?"Size":column==4?"% Ready":"";
+            return column == 0 ? "Hash" : column == 1 ? "Statuses" : column == 2 ? "Name" : column == 3 ? "Size" : column == 4 ? "% Ready" : "";
 //            return "";
         }
 
         @Override
         public Object getColumnValue(SingleListTorrent baseObject, int column) {
-            if (column==1) {
+            if (column == 1) {
                 return baseObject.getStatuses();
-            } else if (column==4) {
-                return baseObject.getPercentReady().toString()+" %";
+            } else if (column == 4) {
+                return baseObject.getPercentReady().toString() + " %";
             }
             return baseObject.get(column);
         }

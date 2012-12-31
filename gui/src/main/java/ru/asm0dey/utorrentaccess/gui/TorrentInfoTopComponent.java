@@ -4,16 +4,20 @@
  */
 package ru.asm0dey.utorrentaccess.gui;
 
+import java.io.IOException;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Exceptions;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import org.openide.windows.TopComponent;
+import ru.asm0dey.utorrentaccess.utorrentclient.UTorrent;
 import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.SingleListTorrent;
 
 /**
  * Top component which displays something.
@@ -38,7 +42,7 @@ preferredID = "TorrentInfoTopComponent")
 })
 public final class TorrentInfoTopComponent extends TopComponent implements LookupListener {
 
-    private Result<FilesRequestResult> lookupResult;
+    private Result<SingleListTorrent> lookupResult;
 
     public TorrentInfoTopComponent() {
         initComponents();
@@ -89,7 +93,7 @@ public final class TorrentInfoTopComponent extends TopComponent implements Looku
 
     @Override
     public void componentOpened() {
-        lookupResult = Utilities.actionsGlobalContext().lookupResult(FilesRequestResult.class);
+        lookupResult = Utilities.actionsGlobalContext().lookupResult(SingleListTorrent.class);
         lookupResult.addLookupListener(this);
     }
 
@@ -102,8 +106,14 @@ public final class TorrentInfoTopComponent extends TopComponent implements Looku
     public void resultChanged(LookupEvent ev) {
         final Class<? extends LookupEvent> aClass = ev.getClass();
         StringBuilder builder = new StringBuilder();
-        for (FilesRequestResult filesRequestResult : lookupResult.allInstances()) {
-            builder.append("\n").append(filesRequestResult.toString());
+        for (SingleListTorrent filesRequestResult : lookupResult.allInstances()) {
+            try {
+                final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
+                instance.getFilesByTorrentHash(filesRequestResult.getHash());
+                builder.append("\n").append(filesRequestResult.toString());
+            } catch (IOException ex) {
+                Exceptions.printStackTrace(ex);
+            }
         }
         jTextPane1.setText(builder.toString());
     }

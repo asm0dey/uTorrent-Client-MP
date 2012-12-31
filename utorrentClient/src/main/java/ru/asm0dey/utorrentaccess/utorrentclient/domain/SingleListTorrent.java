@@ -11,12 +11,13 @@ import java.util.*;
 import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static java.lang.String.valueOf;
+import org.apache.commons.lang.builder.CompareToBuilder;
 
 /**
  * Created with IntelliJ IDEA. User: finkel Date: 28.12.12 Time: 13:04 To change
  * this template use File | Settings | File Templates.
  */
-public class SingleListTorrent extends ArrayList<String> {
+public class SingleListTorrent extends ArrayList<String> implements Comparable {
 
     private String hash;
     private List<Status> statuses;
@@ -292,6 +293,11 @@ public class SingleListTorrent extends ArrayList<String> {
         return HashCodeBuilder.reflectionHashCode(33, 31, this, false, Object.class);
     }
 
+    @Override
+    public int compareTo(Object o) {
+        return CompareToBuilder.reflectionCompare(this, o);
+    }
+
     public enum Status {
 
         LAUNCHED(1), CHECKING(2), LAUNCHING_AFTER_CHECK(4), CHECKED(8), ERROR(16), PAUSED(32), QUEUED(64), DOWNLOADED(128);
@@ -331,7 +337,6 @@ public class SingleListTorrent extends ArrayList<String> {
         public int getStatusInt() {
             return myStatusInt;
         }
-
     }
 
     public void cloneWithoutHash(SingleListTorrent changed) {
