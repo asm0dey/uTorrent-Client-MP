@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.finkel.utorrentaccess;
+package ru.asm0dey.utorrentaccess.utorrentclient;
 
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;

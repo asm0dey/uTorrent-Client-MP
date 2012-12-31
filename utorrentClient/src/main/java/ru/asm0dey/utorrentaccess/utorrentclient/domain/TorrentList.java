@@ -1,5 +1,5 @@
 
-package ru.finkel.utorrentaccess.domain;
+package ru.asm0dey.utorrentaccess.utorrentclient.domain;
 
 import java.util.ArrayList;
 import java.util.HashMap;

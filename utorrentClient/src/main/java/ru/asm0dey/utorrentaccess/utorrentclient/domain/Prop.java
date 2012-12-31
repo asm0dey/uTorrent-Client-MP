@@ -1,4 +1,4 @@
-package ru.finkel.utorrentaccess.domain;
+package ru.asm0dey.utorrentaccess.utorrentclient.domain;
 
 import javax.annotation.Generated;
 import org.apache.commons.lang.builder.EqualsBuilder;

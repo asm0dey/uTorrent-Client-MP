@@ -2,11 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.finkel.utorrentaccess;
+package ru.asm0dey.utorrentaccess.utorrentclient;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import fj.P2;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -14,16 +13,14 @@ import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import ru.finkel.utorrentaccess.domain.ChangedTorrentList;
-import ru.finkel.utorrentaccess.domain.TorrentList;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.ChangedTorrentList;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
+import ru.asm0dey.utorrentaccess.utorrentclient.domain.TorrentList;
 
-import static ru.finkel.utorrentaccess.UTorrent.Action.GET_FILES;
-import ru.finkel.utorrentaccess.domain.FilesRequestResult;
 //import ru.finkel.utorrentaccess.domain.TorrentFiles;
 
 /**
@@ -90,7 +87,7 @@ public class UTorrent {
      * @throws IOException
      */
     private String getFilesByTorrentHashJson(String hash) throws IOException {
-        String url = generateFirstPartOfRequestUrl() + generateActionPart(GET_FILES) + "&hash=" + hash;
+        String url = generateFirstPartOfRequestUrl() + generateActionPart(Action.GET_FILES) + "&hash=" + hash;
         final String text = generateJsonReturningRequest(url);
         return text;
     }

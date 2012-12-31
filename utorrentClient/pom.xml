@@ -87,8 +87,8 @@
                 <extensions>true</extensions>
                 <configuration>
                     <publicPackages>
-                        <publicPackage>ru.finkel.utorrentaccess</publicPackage>
-                        <publicPackage>ru.finkel.utorrentaccess.domain</publicPackage>
+                        <publicPackage>ru.asm0dey.utorrentaccess.utorrentclient</publicPackage>
+                        <publicPackage>ru.asm0dey.utorrentaccess.utorrentclient.domain</publicPackage>
                     </publicPackages>
                 </configuration>
             </plugin>

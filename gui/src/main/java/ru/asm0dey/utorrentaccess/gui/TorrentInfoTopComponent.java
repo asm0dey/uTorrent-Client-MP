@@ -10,9 +10,9 @@ import org.openide.awt.ActionReference;
 import org.openide.util.Lookup.Result;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
+import org.openide.windows.TopComponent;
 import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
 
 /**
