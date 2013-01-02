@@ -60,6 +60,7 @@
         <module>application</module>
         <module>gui</module>
     <module>utorrentClient</module>
+    <module>services</module>
   </modules>
 
     <properties>

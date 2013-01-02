@@ -30,15 +30,11 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="jTable1">
+        <Component class="com.jidesoft.grid.SortableTable" name="jTable1">
           <Properties>
             <Property name="autoResizeMode" type="int" value="0"/>
-            <Property name="doubleBuffered" type="boolean" value="true"/>
-            <Property name="fillsViewportHeight" type="boolean" value="true"/>
+            <Property name="columnAutoResizable" type="boolean" value="true"/>
           </Properties>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="jTable1.setAutoCreateRowSorter(true);&#xa;"/>
-          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

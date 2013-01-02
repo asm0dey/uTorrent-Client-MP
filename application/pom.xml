@@ -8,7 +8,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>uTorrentClient-app</artifactId>
+    <artifactId>application</artifactId>
     <packaging>nbm-application</packaging>
 
     <name>uTorrentClient-app</name>
@@ -55,6 +55,11 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>utorrentClient</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>services</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

@@ -5,16 +5,15 @@
 package ru.asm0dey.utorrentaccess.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.util.Exceptions;
-import org.openide.util.Lookup.Result;
-import org.openide.util.LookupEvent;
-import org.openide.util.LookupListener;
 import org.openide.util.NbBundle.Messages;
-import org.openide.util.Utilities;
+import org.openide.util.lookup.ServiceProvider;
 import org.openide.windows.TopComponent;
+import ru.asm0dey.utorrentaccess.services.IUseSingleTorrents;
 import ru.asm0dey.utorrentaccess.utorrentclient.UTorrent;
 import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
 import ru.asm0dey.utorrentaccess.utorrentclient.domain.SingleListTorrent;
@@ -40,9 +39,9 @@ preferredID = "TorrentInfoTopComponent")
     "CTL_TorrentInfoTopComponent=TorrentInfo Window",
     "HINT_TorrentInfoTopComponent=This is a TorrentInfo window"
 })
-public final class TorrentInfoTopComponent extends TopComponent implements LookupListener {
+@ServiceProvider(service = IUseSingleTorrents.class)
+public final class TorrentInfoTopComponent extends TopComponent implements IUseSingleTorrents {
 
-    private Result<SingleListTorrent> lookupResult;
 
     public TorrentInfoTopComponent() {
         initComponents();
@@ -65,18 +64,23 @@ public final class TorrentInfoTopComponent extends TopComponent implements Looku
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jideLabel1 = new com.jidesoft.swing.JideLabel();
 
-        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
+        org.openide.awt.Mnemonics.setLocalizedText(jideLabel1, org.openide.util.NbBundle.getMessage(TorrentInfoTopComponent.class, "TorrentInfoTopComponent.jideLabel1.text")); // NOI18N
 
-        jScrollPane1.setViewportView(jTextPane1);
-
-        add(jScrollPane1);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jideLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jideLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+        );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextPane jTextPane1;
+    private com.jidesoft.swing.JideLabel jideLabel1;
     // End of variables declaration//GEN-END:variables
 
     void writeProperties(java.util.Properties p) {
@@ -93,28 +97,22 @@ public final class TorrentInfoTopComponent extends TopComponent implements Looku
 
     @Override
     public void componentOpened() {
-        lookupResult = Utilities.actionsGlobalContext().lookupResult(SingleListTorrent.class);
-        lookupResult.addLookupListener(this);
     }
 
     @Override
     public void componentClosed() {
-        lookupResult.removeLookupListener(this);
     }
 
     @Override
-    public void resultChanged(LookupEvent ev) {
-        final Class<? extends LookupEvent> aClass = ev.getClass();
-        StringBuilder builder = new StringBuilder();
-        for (SingleListTorrent filesRequestResult : lookupResult.allInstances()) {
-            try {
-                final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
-                instance.getFilesByTorrentHash(filesRequestResult.getHash());
-                builder.append("\n").append(filesRequestResult.toString());
-            } catch (IOException ex) {
-                Exceptions.printStackTrace(ex);
-            }
+    public void handle(SingleListTorrent torrent) {
+        try {
+            StringBuilder builder = new StringBuilder();
+            final UTorrent instance = UTorrent.getInstance("192.168.1.2", 8080, "admin", "");
+            final FilesRequestResult filesByTorrentHash = instance.getFilesByTorrentHash(torrent.getHash());
+            builder.append("\n").append(filesByTorrentHash.toString());
+            jideLabel1.setText(builder.toString());
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
         }
-        jTextPane1.setText(builder.toString());
     }
 }

@@ -22,7 +22,6 @@ import ru.asm0dey.utorrentaccess.utorrentclient.domain.FilesRequestResult;
 import ru.asm0dey.utorrentaccess.utorrentclient.domain.TorrentList;
 
 //import ru.finkel.utorrentaccess.domain.TorrentFiles;
-
 /**
  * @author finkel
  */
@@ -35,7 +34,6 @@ public class UTorrent {
     private static DefaultHttpClient httpClient = new DefaultHttpClient();
     private String token;
     private static final Map<UTorrentServer, UTorrent> MAP = new HashMap<>();
-
 
     private UTorrent() {
     }
@@ -86,14 +84,14 @@ public class UTorrent {
      * @return
      * @throws IOException
      */
-    private String getFilesByTorrentHashJson(String hash) throws IOException {
+    String getFilesByTorrentHashJson(String hash) throws IOException {
         String url = generateFirstPartOfRequestUrl() + generateActionPart(Action.GET_FILES) + "&hash=" + hash;
         final String text = generateJsonReturningRequest(url);
         return text;
     }
 
     public FilesRequestResult getFilesByTorrentHash(String hash) throws IOException {
-        
+
         final FilesRequestResult result = GSON.fromJson(getFilesByTorrentHashJson(hash), FilesRequestResult.class);
         return result;
     }

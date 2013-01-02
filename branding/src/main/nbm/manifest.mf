@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
+OpenIDE-Module-Install: ru/asm0dey/branding/Installer.class
 OpenIDE-Module-Localizing-Bundle: ru/asm0dey/utorrentaccess/utorrentclient/branding/Bundle.properties
 AutoUpdate-Essential-Module: true

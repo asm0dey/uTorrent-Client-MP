@@ -17,7 +17,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  *
  * @author finkel
  */
-class FilesByHash {
+public class FilesByHash {
 
     private String hash;
     private ArrayList<SingleFile> filesList = new ArrayList<>();
