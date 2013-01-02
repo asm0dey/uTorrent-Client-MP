@@ -27,7 +27,7 @@ import java.util.*;
  * Reflection will also be used to implement the getValueAt() and setValueAt()
  * methods.
  */
-public class BeanTableModel<T> extends RowTableModel<T> {
+public class MyBeanTableModel<T> extends RowTableModel<T> {
     //  Map "type" to "class". Class is needed for the getColumnClass() method.
 
     private static Map<Class, Class> primitives = new HashMap<Class, Class>(10);
@@ -54,7 +54,7 @@ public class BeanTableModel<T> extends RowTableModel<T> {
      * class is also used to determine the columns that will be displayed in the
      * model
      */
-    public BeanTableModel(Class beanClass) {
+    public MyBeanTableModel(Class beanClass) {
         this(beanClass, beanClass, new ArrayList<T>());
     }
 
@@ -66,7 +66,7 @@ public class BeanTableModel<T> extends RowTableModel<T> {
      * @param ancestorClass the methods of this class and its descendents down
      * to the bean class can be included in the model.
      */
-    public BeanTableModel(Class beanClass, Class ancestorClass) {
+    public MyBeanTableModel(Class beanClass, Class ancestorClass) {
         this(beanClass, ancestorClass, new ArrayList<T>());
     }
 
@@ -77,7 +77,7 @@ public class BeanTableModel<T> extends RowTableModel<T> {
      * @param beanClass class of the beans that will be added to the model.
      * @param modelData the data of the table
      */
-    public BeanTableModel(Class beanClass, List<T> modelData) {
+    public MyBeanTableModel(Class beanClass, List<T> modelData) {
         this(beanClass, beanClass, modelData);
     }
 
@@ -90,7 +90,7 @@ public class BeanTableModel<T> extends RowTableModel<T> {
      * to the bean class can be included in the model.
      * @param modelData the data of the table
      */
-    public BeanTableModel(Class beanClass, Class ancestorClass, List<T> modelData) {
+    public MyBeanTableModel(Class beanClass, Class ancestorClass, List<T> modelData) {
         super(beanClass);
         this.beanClass = beanClass;
         this.ancestorClass = ancestorClass;
